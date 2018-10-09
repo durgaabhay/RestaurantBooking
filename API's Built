@@ -1,0 +1,6 @@
+Admin Login - (POST)http://localhost:3000/admin/login - Required Parameters [userName,password,userRole(Employee/Manager)]
+Create new Tables - (POST)http://localhost:3000/reserve/createTables - Required Parameters [tableNumber,status(READY,DINING,COMPLETE),noOfSeats].
+                Add headers for authorization.(BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4)
+Get Free Tables - (GET) http://localhost:3000/reserve/readFreeTables  with Authorization
+Place Order - (POST) http://localhost:3000/customer/placeOrder with authorization Required Body Parameters [userName,email,phoneNumber,noOfSeats]
+CheckOut - (POST) http://localhost:3000/customer/checkOut with Authorization Required Parameters [tableNumber]
