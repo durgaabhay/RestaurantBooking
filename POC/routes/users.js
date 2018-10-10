@@ -11,7 +11,12 @@ const Reservation = require('../models/reservation');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  Customer.find().exec().then(result => {
+      console.log(result);
+      res.status(200).json({result});
+  }).catch(err =>{
+      res.status(500).json({err});
+  })
 });
 
 router.post('/placeOrder',checkAuth,(req,res,next)=> {
@@ -49,7 +54,7 @@ router.post('/placeOrder',checkAuth,(req,res,next)=> {
 
 function reserveTable(req,res){
     console.log('Inside reserve Table ', req.body);
-    Reservation.find({noOfSeats:req.body.noOfSeats,status:'READY'}).exec()
+    Reservation.find({noOfSeats:req.body.noOfSeats,status:'READY',tableType:'ALACARTE'}).exec()
         .then( foundTable => {
             console.log('Found tables ' , foundTable);
             if(foundTable.length >= 1){

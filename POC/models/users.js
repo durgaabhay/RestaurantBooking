@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
     userName: String,
     email: {type: String,
             match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/},
-    phoneNumber: Number,
+    phoneNumber: String,
     tableStatus : String
 });
 

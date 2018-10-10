@@ -4,14 +4,18 @@ const tableSchema = mongoose.Schema({
    _id : mongoose.Schema.Types.ObjectId,
    tableNumber : String,
    customerName : String,
-   phoneNumber : Number,
+   phoneNumber : String,
    noOfSeats : Number,
    status :  {
         type: String,
         enum:['READY','CLEANING','DINING','RESERVED','WAITING','COMPLETE'],
         default:'RESERVED'
    },
-    bookingDate: Date
+    bookingDate: Date,
+    tableType : {
+       type : String,
+        enum:['RESERVATION','ALACARTE']
+    }
 });
 
 module.exports = mongoose.model('Reservation', tableSchema);

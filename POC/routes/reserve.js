@@ -63,16 +63,17 @@ router.get('/inqueue',(req,res,next) => {
 });
 
 router.post('/inbound', (req,res,next) => {
-    console.log('Inbound message is getting in');
+    console.log('Inbound message is getting in' , req.body.Body);
     let body = req.body.Body;
-    let from = req.body.from;
-    let to = req.body.to;
+    let from = req.body.From;
+    let to = req.body.To;
     let reserveTime = Date.parse(body);
     let seats = body;
-    console.log('reserveTime', reserveTime);
-    Customer.findOne({phoneNumber : req.body.from}).exec()
+    // console.log('reserveTime', reserveTime);
+    console.log('from number', from);
+    Customer.find({phoneNumber : from}).exec()
         .then( foundCustomer => {
-            console.log('Does the customer exists ?', foundCustomer.length);
+            console.log('Does the customer exists ?', foundCustomer);
             if(foundCustomer.length == 1) {
                 if (body === 'Reserve') {
                     client.messages.create({
@@ -80,7 +81,8 @@ router.post('/inbound', (req,res,next) => {
                         from :`${to}`,
                         body : 'How many people are you making a reservation for?'
                     })
-                } else if(!isNaN(body)){//checking if body entered value is a number
+                }
+                else if(!isNaN(body)){//checking if body entered value is a number
                     Customer.updateOne({phoneNumber:req.body.from}, {$set: {noOfSeats: body}}).exec();
                     client.messages.create({
                         to :`${from}`,
@@ -88,13 +90,18 @@ router.post('/inbound', (req,res,next) => {
                         body : 'Time of reservation? Specify in this format: 2018-10-08 13:35'
                     })
                 }
-                else if (reserveTime instanceof Date){
+                else if (body instanceof Date){
                     console.log('yes, user entered reserveTime correctly' , reserveTime);
                     //add new tables only for phone reservations
-                    Reservation.findOne({tableType:'RESERVATION'}).exec()
+                    Reservation.find({status: 'READY', tableType:'RESERVATION'}).exec()
                         .then( foundTable => {
                             if(foundTable.length >= 1){
-                                Reservation.updateOne({_id:foundTable[0]._id} , {$set : {customerName: foundCustomer.customerName, status:'RESERVED', bookingDate: reserveTime}})
+                                Reservation.updateOne({_id:foundTable[0]._id} , {$set : {customerName: foundCustomer.customerName, status:'RESERVED', bookingDate: reserveTime}}).exec();
+                                client.messages.create({
+                                    to : `${from}`,
+                                    from : `${to}`,
+                                    body : 'Your reservation has been made. You will also receive a reminder.Thanks!'
+                                })
                             }else{
                                 Customer.updateOne({phoneNumber:from}, {$set : {tableStatus : 'INQUEUE'}}).exec()
                                     .then(result => {
@@ -130,10 +137,15 @@ router.post('/inbound', (req,res,next) => {
                 }
             }else{
                 //create new customer first
+                const newCustomer = new Customer({
+                    _id: mongoose.Types.ObjectId(),
+                    phoneNumber: req.body.From
+                });
+                newCustomer.save();
                 client.messages.create({
                     to :`${from}`,
                     from :`${to}`,
-                    body : 'Welcome new customer. Enter your name to continue.'
+                    body : 'Welcome new customer. Please type Reserve to start a reservation for you!'
                 })
             }
         });
@@ -144,7 +156,8 @@ router.post('/createTables', (req,res,next) => {
      _id : mongoose.Types.ObjectId(),
      tableNumber : req.body.tableNumber,
      status : req.body.status,
-     noOfSeats : req.body.noOfSeats
+     noOfSeats : req.body.noOfSeats,
+     tableType: req.body.tableType
    });
    newTable.save()
        .then( result => {
@@ -154,7 +167,8 @@ router.post('/createTables', (req,res,next) => {
                tableDetails : {
                    tableNumber : result.tableNumber,
                    tableStatus : result.status,
-                   noOfSeats : result.noOfSeats
+                   noOfSeats : result.noOfSeats,
+                   tableType : result.tableType
                }
            })
        }).catch( err => {
