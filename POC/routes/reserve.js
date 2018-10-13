@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const checkAuth = require('../auth/check-auth');
+const dateFormat = require('dateformat');
 
 const readyStatus = 'READY';
 const reservedStatus = 'RESERVED';
@@ -16,7 +17,7 @@ const Reservation = require('../models/reservation');
 const Customer = require('../models/users');
 
 router.get('/readFreeTables', checkAuth, (req,res,next) => {
-    Reservation.find({status : readyStatus}).exec()
+    Reservation.find({status : readyStatus,tableType:'ALACARTE'}).exec()
         .then( readyTables => {
             console.log('List if available tables' , readyTables);
             res.status(200).json({
@@ -31,14 +32,25 @@ router.get('/readFreeTables', checkAuth, (req,res,next) => {
     });
 });
 
-router.get('/readReservedTables',checkAuth, (req,res,next) => {
-   Reservation.find({status : reservedTables}).exec()
-       .then( reservedTables => {
-           console.log('List of reserved tables' , reservedTables);
-           res.status(200).json({
-               tableCount : reservedTables.length,
-               tableData : reservedTables
-           })
+router.get('/alacarteTableStatus', checkAuth, (req,res,next) => {
+
+    Reservation.find({tableType : 'ALACARTE'}).exec()
+        .then( result => {
+            console.log('List if available tables' , result);
+            res.status(200).json({result});
+        }).catch( err => {
+        res.status(500).json({
+            message : 'Error reading table data',
+            error : err
+        })
+    });
+});
+
+router.get('/reservationTableStatus',checkAuth, (req,res,next) => {
+   Reservation.find({tableType : 'RESERVATION'}).exec()
+       .then( result => {
+           console.log('List of reserved tables' , result);
+           res.status(200).json({result});
        })
        .catch( err => {
            res.status(500).json({
@@ -49,11 +61,11 @@ router.get('/readReservedTables',checkAuth, (req,res,next) => {
 });
 
 //lists out the customers who are in queue
-router.get('/inqueue',(req,res,next) => {
+router.get('/inqueue',checkAuth,(req,res,next) => {
     console.log('Checking customers inqueue');
     Customer.find({status:inqueueStatus}).exec()
-        .then( inqueueCustomers => {
-            res.status(200).json({inqueueCustomers});
+        .then( result => {
+            res.status(200).json({result});
         }).catch(err => {
             res.status(500).json({
                 message : 'Error loading customers inqueue',
@@ -67,9 +79,9 @@ router.post('/inbound', (req,res,next) => {
     let body = req.body.Body;
     let from = req.body.From;
     let to = req.body.To;
-    let reserveTime = Date.parse(body);
+    let reserveTime = new Date(body);
     let seats = body;
-    // console.log('reserveTime', reserveTime);
+    console.log('reserveTime', reserveTime);
     console.log('from number', from);
     Customer.find({phoneNumber : from}).exec()
         .then( foundCustomer => {
@@ -90,13 +102,13 @@ router.post('/inbound', (req,res,next) => {
                         body : 'Time of reservation? Specify in this format: 2018-10-08 13:35'
                     })
                 }
-                else if (body instanceof Date){
+                else if (reserveTime instanceof Date){
                     console.log('yes, user entered reserveTime correctly' , reserveTime);
                     //add new tables only for phone reservations
                     Reservation.find({status: 'READY', tableType:'RESERVATION'}).exec()
                         .then( foundTable => {
                             if(foundTable.length >= 1){
-                                Reservation.updateOne({_id:foundTable[0]._id} , {$set : {customerName: foundCustomer.customerName, status:'RESERVED', bookingDate: reserveTime}}).exec();
+                                Reservation.updateOne({_id:foundTable[0]._id} , {$set : {customerName: foundCustomer.customerName, status:'RESERVED', bookingDate: reserveTime, phoneNumber : from}}).exec();
                                 client.messages.create({
                                     to : `${from}`,
                                     from : `${to}`,

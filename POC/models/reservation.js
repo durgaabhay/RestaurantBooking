@@ -11,7 +11,7 @@ const tableSchema = mongoose.Schema({
         enum:['READY','CLEANING','DINING','RESERVED','WAITING','COMPLETE'],
         default:'RESERVED'
    },
-    bookingDate: Date,
+    bookingDate: String,
     tableType : {
        type : String,
         enum:['RESERVATION','ALACARTE']

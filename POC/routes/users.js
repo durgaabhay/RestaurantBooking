@@ -19,6 +19,17 @@ router.get('/', function(req, res, next) {
   })
 });
 
+router.post('/searchCustomer',checkAuth,(req,res,next) => {
+    console.log('Getting inside customer search' , req.body.phoneNumber);
+   Customer.find({phoneNumber: req.body.phoneNumber}).exec()
+       .then(result => {
+           console.log({result});
+           res.status(200).json(result);
+       }).catch(err => {
+
+   });
+});
+
 router.post('/placeOrder',checkAuth,(req,res,next)=> {
     Customer.find({email: req.body.email}).exec()
         .then(userExists => {
@@ -54,15 +65,20 @@ router.post('/placeOrder',checkAuth,(req,res,next)=> {
 
 function reserveTable(req,res){
     console.log('Inside reserve Table ', req.body);
+    var dateTime = new Date().toISOString().
+    replace(/T/, ' ').      // replace T with a space
+    replace(/\..+/, '');    // delete the dot and everything after;
+
     Reservation.find({noOfSeats:req.body.noOfSeats,status:'READY',tableType:'ALACARTE'}).exec()
         .then( foundTable => {
             console.log('Found tables ' , foundTable);
             if(foundTable.length >= 1){
-                Reservation.updateOne({_id:foundTable[0]._id} , {$set : {customerName: req.body.userName, status:'DINING', bookingDate: new Date()}})
+                console.log('converted date is : ', dateTime);
+                Reservation.updateOne({_id:foundTable[0]._id} , {$set : {customerName: req.body.userName, status:'DINING', bookingDate: dateTime.toString()}})
                     .exec().then( result => {
                     res.status(200).json({
                         message : 'Table assigned to customer',
-                        tableDetails : {result}
+                        tableDetails : foundTable[0].tableNumber
                     })
                 }).catch(err=>{
                     res.status(500).json({
@@ -74,7 +90,7 @@ function reserveTable(req,res){
                 Customer.updateOne({email:req.body.email}, {$set : {tableStatus : 'INQUEUE'}}).exec()
                     .then( result => {
                         client.messages.create({
-                            to : `${userExists.phoneNumber}`,
+                            to : `${req.body.phoneNumber}`,
                             from : '17047538151',
                             body : 'Welcome"' + req.body.userName + '"to Awesome Food. Thank you for your patience. Once a table is ready you will receive a message'
                         });
@@ -97,9 +113,9 @@ router.post('/checkOut', (req,res,next) => {
    Reservation.updateOne({tableNumber:req.body.tableNumber} , {$set :{customerName:'', status:'READY'}}).exec();
        //send a twilio message for user feedback
     client.messages.create({
-        to : `${userExists.phoneNumber}`,
+        to : `${req.body.phoneNumber}`,
         from : '17047538151',
-        body : 'Thank you for your visit. Would you like to leave us a feedback?'
+        body : 'Thank you for your visit. How would you rate our service? Respond back with Yes or No'
     });
 });
 
