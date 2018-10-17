@@ -4,3 +4,8 @@ Create new Tables - (POST)http://localhost:3000/reserve/createTables - Required 
 Get Free Tables - (GET) http://localhost:3000/reserve/readFreeTables  with Authorization
 Place Order - (POST) http://localhost:3000/customer/placeOrder with authorization Required Body Parameters [userName,email,phoneNumber,noOfSeats]
 CheckOut - (POST) http://localhost:3000/customer/checkOut with Authorization Required Parameters [tableNumber]
+Reservation - (GET) http://localhost:3000/reserve/reservationTableStatus
+Alacarte - (GET) http://localhost:3000/reserve/alacarteTableStatus
+Customer Search - (POST) localhost:3000/customer/searchCustomer
+Inqueue Customers - (GET) http://localhost:3000/reserve/inqueue
+Feedback - (GET) http://localhost:3000/customer/feedback
