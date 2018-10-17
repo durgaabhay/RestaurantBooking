@@ -11,8 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/userName"
-        android:layout_marginTop="86dp"
+        android:layout_alignStart="@+id/userRole"
+        android:layout_marginTop="198dp"
         android:layout_weight="1"
         android:ems="10"
         android:hint="@string/enter_pwd"
@@ -22,9 +22,9 @@
         android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/textPassword"
+        android:layout_marginTop="132dp"
         android:layout_weight="1"
         android:ems="10"
         android:hint="@string/uname"
@@ -34,11 +34,45 @@
         android:id="@+id/btnSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="89dp"
-        android:layout_marginTop="176dp"
+        android:layout_marginBottom="153dp"
+        android:layout_marginStart="114dp"
         android:text="@string/btn_signIn" />
+
+    <EditText
+        android:id="@+id/userRole"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tctRoleHints"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="@string/txt_userRole"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/tctRoleHints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="225dp"
+        android:layout_marginStart="53dp"
+        android:hint="@string/userrole_hint"
+        android:textColor="@color/colorAccent"
+        />
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/title_value"
+        android:textColor="@color/colorPrimary"
+        android:textSize="40dp"
+        android:textStyle="bold|italic" />
 
 
 </RelativeLayout>

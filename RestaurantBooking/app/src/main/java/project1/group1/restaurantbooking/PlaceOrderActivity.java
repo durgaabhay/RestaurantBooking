@@ -12,7 +12,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.MediaType;
@@ -25,7 +24,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import project1.group1.restaurantbooking.data.CustomerInfo;
 import project1.group1.restaurantbooking.data.Table;
 
 public class PlaceOrderActivity extends AppCompatActivity {
@@ -35,7 +33,6 @@ public class PlaceOrderActivity extends AppCompatActivity {
     JSONObject tokenObject;
     String token,noOfSeats;
     ProgressDialog progressDialog;
-    Table bookedtable;
     RadioGroup rg;
     RadioButton rb1,rb2,rb3,rb4,rb5,rb6;
 
@@ -84,7 +81,6 @@ public class PlaceOrderActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("My_Pref",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         token = sharedPreferences.getString("userToken","");
-        Log.d("demo", "loadSharedPreferences: " + token);
     }
 
     private void placeOrder() {
@@ -99,10 +95,9 @@ public class PlaceOrderActivity extends AppCompatActivity {
         jsonObject.addProperty("phoneNumber",phoneNumber.getText().toString());
         jsonObject.addProperty("noOfSeats",noOfSeats);
         RequestBody formBody = RequestBody.create(JSON,jsonObject.toString());
-        Log.d("demo", "token value is : " + token);
-        Log.d("demo", "Place order: " + formBody.toString());
-        final Request request = new Request.Builder().url("http://192.168.0.13:3000/customer/placeOrder")
-                .header("Authorization","Bearer " +token)//replace the ip here
+
+        final Request request = new Request.Builder().url(URLConstants.URL_PLACE_ORDER)
+                .header("Authorization","Bearer " +token)
                 .addHeader("Content-Type","application/json")
                 .post(formBody)
                 .build();
@@ -116,12 +111,15 @@ public class PlaceOrderActivity extends AppCompatActivity {
             public void onResponse(final Response response) throws IOException {
                 if(response.isSuccessful()){
                     final String result = response.body().string();
-                    Log.d("demo", "onResponse: " + result);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(),"Table assigned to customer",Toast.LENGTH_SHORT).show();
+                            if(response.code() ==200){
+                                Toast.makeText(getApplicationContext(),"Table assigned to customer",Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(getApplicationContext(),"Customer in queue.Message sent!",Toast.LENGTH_SHORT).show();
+                            }
                             Intent backToUsersScreen = new Intent(PlaceOrderActivity.this,UserActivity.class);
                             startActivity(backToUsersScreen);
                             finish();

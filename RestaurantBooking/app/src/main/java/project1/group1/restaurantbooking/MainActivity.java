@@ -26,9 +26,8 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText userName, password;
-    public static final String MANAGER_ROLE  = "MANAGER";
-    public static final String EMPLOYEE_ROLE = "EMPLOYEE";
+    EditText userName, password, userRole;
+
     private final OkHttpClient client = new OkHttpClient();
     JSONObject tokenObject;
     String token;
@@ -42,39 +41,42 @@ public class MainActivity extends AppCompatActivity {
 
         userName = findViewById(R.id.userName);
         password = findViewById(R.id.textPassword);
+        userRole = findViewById(R.id.userRole);
 
         findViewById(R.id.btnSignIn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validateFields(userName.getText().toString(),password.getText().toString());
+                validateFields(userName.getText().toString(),password.getText().toString(),userRole.getText().toString());
             }
         });
     }
 
-    private void validateFields(String userName, String password) {
+    private void validateFields(String userName, String password,String userRole) {
         if(userName ==null || userName.length()==0){
             Toast.makeText(getApplicationContext(),"Invalid user name", Toast.LENGTH_SHORT).show();
         }else if(password == null || password.length() == 0){
             Toast.makeText(getApplicationContext(),"Invalid password", Toast.LENGTH_SHORT).show();
+        }else if(userRole == null || userRole.length() == 0){
+            Toast.makeText(getApplicationContext(),"User role not found", Toast.LENGTH_SHORT).show();
         }else{
             progressDialog = new ProgressDialog(MainActivity.this);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setTitle("Signing Up....");
             progressDialog.show();
-            signInUser(userName,password);
+            signInUser(userName,password,userRole);
         }
     }
 
-    private void signInUser(String userName, String password) {
+    private void signInUser(String userName, String password, String userRole) {
         MediaType JSON = MediaType.parse("application/json;charset=utf-8");
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("userName",userName);
         jsonObject.addProperty("password",password);
-        jsonObject.addProperty("userRole",MANAGER_ROLE);
+        jsonObject.addProperty("userRole",userRole);
         RequestBody formBody = RequestBody.create(JSON,jsonObject.toString());
         Log.d("demo", "performLogin: " + formBody.toString());
-        final Request request = new Request.Builder().url("http://192.168.0.13:3000/admin/login")
-                .header("Content-Type","application/json")//replace the ip here
+        final Request request = new Request.Builder().url(URLConstants.URL_LOGIN)
+                .header("Content-Type","application/json")
                 .post(formBody)
                 .build();
         client.newCall(request).enqueue(new Callback() {
@@ -89,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
                     try{
                         tokenObject = new JSONObject(response.body().string());
                         token  = tokenObject.getString("token");
-                        Log.d("demo", "Token data from server: " + token );
-                        Log.d("test", "onResponse: Successful Login" + response.body().toString());
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

@@ -47,13 +47,12 @@ class ReservationTableAdapter extends RecyclerView.Adapter<ReservationTableAdapt
                 .inflate(R.layout.view_reserve_tables, parent, false);
         ReservationTableAdapter.ViewHolder viewHolder = new ReservationTableAdapter.ViewHolder(view);
         return viewHolder;
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull ReservationTableAdapter.ViewHolder viewHolder, int position) {
         table = tableInfo.getResult().get(position);
-        viewHolder.custName.setText(table.getCustomerName());
+        viewHolder.custName.setText(table.getUserName());
         viewHolder.tableNo.setText(table.getTableNumber());
         PrettyTime pt = new PrettyTime();
         viewHolder.checkInTime.setText(table.getBookingDate());
@@ -69,7 +68,7 @@ class ReservationTableAdapter extends RecyclerView.Adapter<ReservationTableAdapt
                 jsonObject.addProperty("phoneNumber",table.getPhoneNumber());
                 RequestBody formBody = RequestBody.create(JSON,jsonObject.toString());
                 final Request request = new Request.Builder().url("http://192.168.0.13:3000/customer/checkOut")
-                        .header("Authorization","Bearer " +authToken)//replace the ip here
+                        .header("Authorization","Bearer " +authToken)
                         .addHeader("Content-Type","application/json")
                         .post(formBody)
                         .build();
@@ -83,8 +82,7 @@ class ReservationTableAdapter extends RecyclerView.Adapter<ReservationTableAdapt
                     public void onResponse(Response response) throws IOException {
                         if(response.isSuccessful()){
                             final String result = response.body().string();
-                            Log.d("demo", "After checkingout : " + result);
-                            Toast.makeText(c,"Check out customer complete!",Toast.LENGTH_SHORT).show();
+                            Log.d("demo", "After checking out : " + result);
                         }
                     }
                 });

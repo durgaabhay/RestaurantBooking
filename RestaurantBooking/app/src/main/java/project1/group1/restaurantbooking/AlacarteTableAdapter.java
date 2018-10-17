@@ -52,9 +52,9 @@ class AlacarteTableAdapter extends RecyclerView.Adapter<AlacarteTableAdapter.Vie
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int position) {
         table = tableInfo.getResult().get(position);
-        viewHolder.custName.setText(table.getCustomerName());
+        viewHolder.custName.setText(table.getUserName());
         viewHolder.tableNo.setText(table.getTableNumber());
         PrettyTime pt = new PrettyTime();
         viewHolder.checkInTime.setText(table.getBookingDate());
@@ -63,14 +63,18 @@ class AlacarteTableAdapter extends RecyclerView.Adapter<AlacarteTableAdapter.Vie
         viewHolder.checkOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("demo", "checkout click: " + table.getTableNumber());
+                Log.d("demo", "checkout click: " + viewHolder.tableNo + viewHolder.phoneNumber);
                 MediaType JSON = MediaType.parse("application/json;charset=utf-8");
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("tableNumber",table.getTableNumber());
-                jsonObject.addProperty("phoneNumber",table.getPhoneNumber());
+                jsonObject.addProperty("tableNumber",viewHolder.tableNo.getText().toString());
+                jsonObject.addProperty("phoneNumber",viewHolder.phoneNumber.getText().toString());
+                viewHolder.custName.setText("");
+                viewHolder.phoneNumber.setText("");
+                viewHolder.checkInTime.setText("");
+                viewHolder.status.setText("READY");
                 RequestBody formBody = RequestBody.create(JSON,jsonObject.toString());
-                final Request request = new Request.Builder().url("http://192.168.0.13:3000/customer/checkOut")
-                        .header("Authorization","Bearer " +authToken)//replace the ip here
+                final Request request = new Request.Builder().url(URLConstants.URL_CHECKOUT_CUSTOMER)
+                        .header("Authorization","Bearer " +authToken)
                         .addHeader("Content-Type","application/json")
                         .post(formBody)
                         .build();
@@ -85,7 +89,6 @@ class AlacarteTableAdapter extends RecyclerView.Adapter<AlacarteTableAdapter.Vie
                         if(response.isSuccessful()){
                             final String result = response.body().string();
                             Log.d("demo", "After checkingout : " + result);
-                            Toast.makeText(c,"Check out customer complete!",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

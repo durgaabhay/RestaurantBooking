@@ -21,7 +21,7 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
-import project1.group1.restaurantbooking.data.CustomerInfo;
+import project1.group1.restaurantbooking.data.Customer;
 
 public class AddCustomerActivity extends AppCompatActivity {
 
@@ -34,7 +34,6 @@ public class AddCustomerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_customer);
-
         customerContact = findViewById(R.id.txtSearchNumber);
         loadSharedPreferences();
 
@@ -88,12 +87,18 @@ public class AddCustomerActivity extends AppCompatActivity {
                         public void run() {
                             if(customer.length()>0) {
                                 Gson gson = new Gson();
-                                CustomerInfo[] customerInfo = gson.fromJson(customer,CustomerInfo[].class);
+                                Customer[] customerInfo = gson.fromJson(customer,Customer[].class);
                                 Log.d("demo", "Customer Info: " + customerInfo.toString());
                                 Intent makeOrder = new Intent(AddCustomerActivity.this,PlaceOrderActivity.class);
-                                makeOrder.putExtra("customerName",customerInfo[0].getUserName());
-                                makeOrder.putExtra("customerEmail",customerInfo[0].getEmail());
-                                makeOrder.putExtra("customerPhoneNumber",customerInfo[0].getPhoneNumber());
+                                if(customerInfo.length == 0){
+                                    makeOrder.putExtra("customerName","");
+                                    makeOrder.putExtra("customerEmail","");
+                                    makeOrder.putExtra("customerPhoneNumber",customerContact.getText().toString());
+                                }else{
+                                    makeOrder.putExtra("customerName",customerInfo[0].getUserName());
+                                    makeOrder.putExtra("customerEmail",customerInfo[0].getEmail());
+                                    makeOrder.putExtra("customerPhoneNumber",customerInfo[0].getPhoneNumber());
+                                }
                                 startActivity(makeOrder);
                             }
                         }

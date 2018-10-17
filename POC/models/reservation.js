@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const tableSchema = mongoose.Schema({
    _id : mongoose.Schema.Types.ObjectId,
    tableNumber : String,
-   customerName : String,
+   userName : String,
    phoneNumber : String,
    noOfSeats : Number,
    status :  {

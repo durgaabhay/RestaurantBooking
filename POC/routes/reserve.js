@@ -15,6 +15,7 @@ const client = new twilio(accountSid, authToken);
 
 const Reservation = require('../models/reservation');
 const Customer = require('../models/users');
+const Feedback = require('../models/feedback');
 
 router.get('/readFreeTables', checkAuth, (req,res,next) => {
     Reservation.find({status : readyStatus,tableType:'ALACARTE'}).exec()
@@ -63,8 +64,9 @@ router.get('/reservationTableStatus',checkAuth, (req,res,next) => {
 //lists out the customers who are in queue
 router.get('/inqueue',checkAuth,(req,res,next) => {
     console.log('Checking customers inqueue');
-    Customer.find({status:inqueueStatus}).exec()
+    Customer.find({tableStatus:inqueueStatus}).exec()
         .then( result => {
+            console.log('inqueue customers',result)
             res.status(200).json({result});
         }).catch(err => {
             res.status(500).json({
@@ -101,14 +103,43 @@ router.post('/inbound', (req,res,next) => {
                         from :`${to}`,
                         body : 'Time of reservation? Specify in this format: 2018-10-08 13:35'
                     })
+                }else if(body === 'Status') {
+                    //user is checking for his/her status
+                    Customer.find({phoneNumber: req.body.from}).exec().then(result => {
+                        client.messages.create({
+                            to: `${from}`,
+                            from: `${to}`,
+                            body: 'Your status is "' + result.tableStatus + '" . Average waiting time will be 15-30 minutes.Thank you'
+                        });
+                    }).catch(err => {
+                        client.messages.create({
+                            to: `${from}`,
+                            from: `${to}`,
+                            body: 'We are experiencing difficulties at the moment. Please try again in a while'
+                        });
+                    });
                 }
-                else if (reserveTime instanceof Date){
+                else if(body === 'Yes' || body === 'No'){
+                    //insert user feedback into database
+                    const feedback = new Feedback({
+                        _id : mongoose.Types.ObjectId(),
+                        phoneNumber : from,
+                        feedback : body
+                    });
+                    feedback.save().then( result => {
+                        console.log('User feedback updated');
+                        res.status(200).json({result});
+                    }).catch( err => {
+                        console.log('error saving user feedback');
+                        res.status(500).json({err})
+                    });
+                }else if (reserveTime instanceof Date){
                     console.log('yes, user entered reserveTime correctly' , reserveTime);
                     //add new tables only for phone reservations
                     Reservation.find({status: 'READY', tableType:'RESERVATION'}).exec()
                         .then( foundTable => {
                             if(foundTable.length >= 1){
-                                Reservation.updateOne({_id:foundTable[0]._id} , {$set : {customerName: foundCustomer.customerName, status:'RESERVED', bookingDate: reserveTime, phoneNumber : from}}).exec();
+                                Reservation.updateOne({_id:foundTable[0]._id} , {$set : {userName: foundCustomer.userName, status:'RESERVED', bookingDate: reserveTime, phoneNumber : from}}).exec();
                                 client.messages.create({
                                     to : `${from}`,
                                     from : `${to}`,
@@ -139,8 +170,7 @@ router.post('/inbound', (req,res,next) => {
                                 error : err
                             });
                     });
-                }
-                    else {
+                }else {
                         client.messages.create({
                                 to :`${from}`,
                                 from :`${to}`,

@@ -31,29 +31,36 @@ router.post('/searchCustomer',checkAuth,(req,res,next) => {
 });
 
 router.post('/placeOrder',checkAuth,(req,res,next)=> {
-    Customer.find({email: req.body.email}).exec()
+    console.log('getting inside placeOrder ', req.body)
+    Customer.find({phoneNumber: req.body.phoneNumber}).exec()
         .then(userExists => {
             if (userExists.length >= 1) {
                 console.log('User already exists' , userExists);
+                if(userExists.userName === ''){
+                    console.log('username not updated', userExists.userName)
+                    Customer.updateOne({phoneNumber: req.body.phoneNumber},
+                        {$set:{userName:req.body.userName,noOfSeats:req.body.noOfSeats}}).exec();
+                }
                 client.messages.create({
-                    to : `${userExists.phoneNumber}`,
+                    to : req.body.phoneNumber,
                     from : '17047538151',
-                    body : 'Welcome"' + req.body.userName + '"to Awesome Food.'
+                    body : 'Welcome "' + req.body.userName + '" to Awesome Food.'
                 });
                 reserveTable(req,res);
             } else {
-                console.log('New user coming in');
+                console.log('New user coming in' , req.body);
                 const newCustomer = new Customer({
                     _id: mongoose.Types.ObjectId(),
                     userName: req.body.userName,
                     email: req.body.email,
-                    phoneNumber: req.body.phoneNumber
+                    phoneNumber: req.body.phoneNumber,
+                    noOfSeats : req.body.noOfSeats
                 });
                 newCustomer.save()
                     .then(result => {
                         console.log('New customer added', result);
                         client.messages.create({
-                            to : `${userExists.phoneNumber}`,
+                            to : result.phoneNumber,
                             from : '17047538151',
                             body : 'Welcome"' + req.body.userName + '"to Awesome Food.'
                         });
@@ -65,7 +72,7 @@ router.post('/placeOrder',checkAuth,(req,res,next)=> {
 
 function reserveTable(req,res){
     console.log('Inside reserve Table ', req.body);
-    var dateTime = new Date().toISOString().
+    var dateTime = new Date().toUTCString().
     replace(/T/, ' ').      // replace T with a space
     replace(/\..+/, '');    // delete the dot and everything after;
 
@@ -74,7 +81,7 @@ function reserveTable(req,res){
             console.log('Found tables ' , foundTable);
             if(foundTable.length >= 1){
                 console.log('converted date is : ', dateTime);
-                Reservation.updateOne({_id:foundTable[0]._id} , {$set : {customerName: req.body.userName, status:'DINING', bookingDate: dateTime.toString()}})
+                Reservation.updateOne({_id:foundTable[0]._id} , {$set : {userName: req.body.userName, phoneNumber: req.body.phoneNumber ,status:'DINING', bookingDate: dateTime.toString()}})
                     .exec().then( result => {
                     res.status(200).json({
                         message : 'Table assigned to customer',
@@ -87,14 +94,14 @@ function reserveTable(req,res){
                     });
                 });
             }else{
-                Customer.updateOne({email:req.body.email}, {$set : {tableStatus : 'INQUEUE'}}).exec()
+                Customer.updateOne({phoneNumber:req.body.phoneNumber}, {$set : {noOfSeats : req.body.noOfSeats, tableStatus : 'INQUEUE', userName: req.body.userName}}).exec()
                     .then( result => {
                         client.messages.create({
                             to : `${req.body.phoneNumber}`,
                             from : '17047538151',
                             body : 'Welcome"' + req.body.userName + '"to Awesome Food. Thank you for your patience. Once a table is ready you will receive a message'
                         });
-                        res.status(200).json({
+                        res.status(201).json({
                             message : 'Putting user in queue',
                             customerDetails : {result}
                         })
@@ -110,13 +117,20 @@ function reserveTable(req,res){
 
 router.post('/checkOut', (req,res,next) => {
    console.log('Inside checkout user' , req.body);
-   Reservation.updateOne({tableNumber:req.body.tableNumber} , {$set :{customerName:'', status:'READY'}}).exec();
+   Reservation.updateOne({tableNumber:req.body.tableNumber} , {$set :{userName:'',phoneNumber: '', bookingDate: '',status:'READY'}})
+       .exec().then( result => {
+           console.log('user checkout complete')
+           res.status(200).json({result});
+            client.messages.create({
+                to : `${req.body.phoneNumber}`,
+                from : '17047538151',
+                body : 'Thank you for your visit. How would you rate our service? Respond back with Yes or No'
+       });
+   }).catch( err =>{
+       res.status(500).json({err});
+   });
        //send a twilio message for user feedback
-    client.messages.create({
-        to : `${req.body.phoneNumber}`,
-        from : '17047538151',
-        body : 'Thank you for your visit. How would you rate our service? Respond back with Yes or No'
-    });
+
 });
 
 
