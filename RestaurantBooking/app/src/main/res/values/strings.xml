@@ -32,4 +32,6 @@
     <string name="title_value">AWESOME FOOD</string>
     <string name="user_activity_title">USER ACTITVITIES</string>
     <string name="cust_feedback">Customer Feedback</string>
+    <string name="reserve_number">Make SMS Reservation - 1(704)753-8151</string>
+    <string name="inqueue_status">Queued Customer? SMS Status for Updates</string>
 </resources>
