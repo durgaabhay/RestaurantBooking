@@ -1,0 +1,314 @@
+{
+	"id": "d575d374-bdce-4073-b8b7-48b659669b24",
+	"name": "Restaurant",
+	"description": "",
+	"auth": null,
+	"events": null,
+	"variables": [],
+	"order": [
+		"7b4980c2-4795-4033-9b93-c39eca262e98",
+		"5f70e919-0897-4100-8379-bd35366bafc8",
+		"db23473e-e2d6-43a6-908f-c763721929ea",
+		"a6ace816-85e5-4465-844d-7d9403664350",
+		"f9a9bbee-cfdc-45a9-9c4a-343d6b3728df",
+		"f8b1e16c-3e60-4fa5-88a1-65526d70e0f5",
+		"172bda1e-1868-45e5-bcf2-2d117e0c55ab",
+		"1f10b522-76c3-4361-b5b0-f9f6fa695ec2",
+		"690ad26c-ab0b-4e86-b692-e8590ed67d51",
+		"056355c1-2549-40ab-b030-51ac90615ae3"
+	],
+	"folders_order": [],
+	"folders": [],
+	"requests": [
+		{
+			"id": "056355c1-2549-40ab-b030-51ac90615ae3",
+			"name": "http://localhost:3000/customer/feedback",
+			"url": "http://localhost:3000/customer/feedback",
+			"description": "",
+			"data": null,
+			"dataMode": "",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "172bda1e-1868-45e5-bcf2-2d117e0c55ab",
+			"name": "http://localhost:3000/reserve/alacarteTableStatus",
+			"url": "http://localhost:3000/reserve/alacarteTableStatus",
+			"description": "",
+			"data": null,
+			"dataMode": "",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "1f10b522-76c3-4361-b5b0-f9f6fa695ec2",
+			"name": "http:localhost:3000/customer/searchCustomer",
+			"url": "http:localhost:3000/customer/searchCustomer",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"name": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"type": "text"
+				},
+				{
+					"key": "Authorization",
+					"value": "BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"rawModeData": "{\n\t\"phoneNumber\" : \"+15129987115\"\n}",
+			"headers": "Content-Type: application/json\nAuthorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "5f70e919-0897-4100-8379-bd35366bafc8",
+			"name": "http://localhost:3000/users/bookOrder",
+			"url": "http://localhost:3000/reserve/createTables",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"name": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"type": "text"
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"rawModeData": "{\n\t\"tableNumber\" : \"Table 1\",\n\t\"status\" : \"READY\",\n\t\"noOfSeats\" : \"3\",\n\t\"tableType\" : \"ALACARTE\"\n}",
+			"headers": "Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4\nContent-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "690ad26c-ab0b-4e86-b692-e8590ed67d51",
+			"name": "http://localhost:3000/reserve/inqueue",
+			"url": "http://10.216.36.153:3000/reserve/inqueue",
+			"description": "",
+			"data": null,
+			"dataMode": "",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "7b4980c2-4795-4033-9b93-c39eca262e98",
+			"name": "http://localhost:3000/signUp",
+			"url": "http://localhost:3000/admin/login",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"name": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"type": "text"
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"rawModeData": "{\n\t\"userName\" : \"user1\",\n\t\"password\" : \"employee\",\n\t\"userRole\" : \"FRONTDESK\"\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "a6ace816-85e5-4465-844d-7d9403664350",
+			"name": "http://localhost:3000/customer/placeOrder",
+			"url": "http://localhost:3000/customer/placeOrder",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"name": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"type": "text"
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"rawModeData": "{\n\t\"userName\" : \"Durga\",\n\t\"email\" : \"durga.abayakumar@gmail.com\",\n\t\"phoneNumber\" : \"15129987115\",\n\t\"noOfSeats\" : \"2\"\n}",
+			"headers": "Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4\nContent-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "db23473e-e2d6-43a6-908f-c763721929ea",
+			"name": "http://localhost:3000/reserve/readFreeTables",
+			"url": "http://localhost:3000/reserve/readFreeTables",
+			"description": "",
+			"data": null,
+			"dataMode": "",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "f8b1e16c-3e60-4fa5-88a1-65526d70e0f5",
+			"name": "http://localhost:3000/reserve/readReservedTables",
+			"url": "http://localhost:3000/reserve/readReservedTables",
+			"description": "",
+			"data": null,
+			"dataMode": "",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "",
+					"value": "",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "f9a9bbee-cfdc-45a9-9c4a-343d6b3728df",
+			"name": "http://localhost:3000/customer/checkOut",
+			"url": "http://localhost:3000/customer/checkOut",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"name": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"type": "text"
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"rawModeData": "{\n\t\"tableNumber\" : \"Table III\"\n}",
+			"headers": "Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmJhNzY1YzVkOGY4YTJjMThhMTFhODUiLCJ1c2VyTmFtZSI6InVzZXIyIiwidXNlclJvbGUiOiJNQU5BR0VSIiwiaWF0IjoxNTM4OTQ3MzY4LCJleHAiOjE1NDAyNDMzNjh9.UBoBX9hQ0i2RgVe9sc65GCnO1LafpeTl42y1aqh9Kr4\nContent-Type: application/json\n",
+			"pathVariables": {}
+		}
+	]
+}
