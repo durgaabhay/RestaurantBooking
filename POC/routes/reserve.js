@@ -17,6 +17,8 @@ const Reservation = require('../models/reservation');
 const Customer = require('../models/users');
 const Feedback = require('../models/feedback');
 
+var userStatus = '';
+
 router.get('/readFreeTables', checkAuth, (req,res,next) => {
     Reservation.find({status : readyStatus,tableType:'ALACARTE'}).exec()
         .then( readyTables => {
@@ -83,11 +85,10 @@ router.post('/inbound', (req,res,next) => {
     let to = req.body.To;
     let reserveTime = new Date(body);
     let seats = body;
-    console.log('reserveTime', reserveTime);
-    console.log('from number', from);
     Customer.find({phoneNumber : from}).exec()
         .then( foundCustomer => {
             console.log('Does the customer exists ?', foundCustomer);
+            console.log('table status ' + foundCustomer[0].tableStatus);
             if(foundCustomer.length == 1) {
                 if (body === 'Reserve') {
                     client.messages.create({
@@ -105,11 +106,13 @@ router.post('/inbound', (req,res,next) => {
                     })
                 }else if(body === 'Status') {
                     //user is checking for his/her status
-                    Customer.find({phoneNumber: req.body.from}).exec().then(result => {
+                    Customer.find({phoneNumber: from}).then(result => {
+                        userStatus = result[0].tableStatus;
+                        console.log('User looking for a status ', userStatus);
                         client.messages.create({
                             to: `${from}`,
                             from: `${to}`,
-                            body: 'Your status is "' + result.tableStatus + '" . Average waiting time will be 15-30 minutes.Thank you'
+                            body: 'Your status is "' + userStatus + '" . Average waiting time will be 15-30 minutes.Thank you'
                         });
                     }).catch(err => {
                         client.messages.create({
@@ -140,6 +143,7 @@ router.post('/inbound', (req,res,next) => {
                         .then( foundTable => {
                             if(foundTable.length >= 1){
                                 Reservation.updateOne({_id:foundTable[0]._id} , {$set : {userName: foundCustomer.userName, status:'RESERVED', bookingDate: reserveTime, phoneNumber : from}}).exec();
+                                Customer.updateOne({phoneNumber:from},{$set : {tableStatus:'RESERVED'}}).exec();
                                 client.messages.create({
                                     to : `${from}`,
                                     from : `${to}`,
@@ -174,7 +178,7 @@ router.post('/inbound', (req,res,next) => {
                         client.messages.create({
                                 to :`${from}`,
                                 from :`${to}`,
-                                body : 'Do you wish to make a reservation? Please send message Reserve to the same number.'
+                                body : 'Do you wish to make a reservation? Please send message Reserve to the same number.You can also send Status to check your waiting time'
                         });
                 }
             }else{
@@ -187,7 +191,7 @@ router.post('/inbound', (req,res,next) => {
                 client.messages.create({
                     to :`${from}`,
                     from :`${to}`,
-                    body : 'Welcome new customer. Please type Reserve to start a reservation for you!'
+                    body : 'Welcome new customer. Please type Reserve to start a reservation for you!We have 2,3,4,5,6 seats.'
                 })
             }
         });
