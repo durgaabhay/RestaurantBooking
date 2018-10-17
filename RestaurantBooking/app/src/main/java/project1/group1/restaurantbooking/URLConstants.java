@@ -9,6 +9,7 @@ public class URLConstants {
     public static final String URL_PLACE_ORDER = "http://192.168.0.13:3000/customer/placeOrder";
     public static final String URL_CHECKOUT_CUSTOMER = "http://192.168.0.13:3000/customer/checkOut";
     public static final String URL_ASSIGN_TABLE = "http://192.168.0.13:3000/customer/placeOrder";
+    public static final String URL_CUSTOMER_FEEDBACK = "http://192.168.0.13:3000/customer/feedback";
 
 
 }

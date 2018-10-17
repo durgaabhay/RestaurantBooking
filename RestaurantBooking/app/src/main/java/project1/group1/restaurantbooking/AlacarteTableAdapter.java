@@ -60,6 +60,7 @@ class AlacarteTableAdapter extends RecyclerView.Adapter<AlacarteTableAdapter.Vie
         viewHolder.checkInTime.setText(table.getBookingDate());
         viewHolder.status.setText(table.getStatus());
         viewHolder.phoneNumber.setText(table.getPhoneNumber());
+        viewHolder.noOfSeats.setText(table.getNoOfSeats() + " seater");
         viewHolder.checkOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,7 +104,7 @@ class AlacarteTableAdapter extends RecyclerView.Adapter<AlacarteTableAdapter.Vie
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView custName,tableNo,checkInTime,status,phoneNumber;
+        TextView custName,tableNo,checkInTime,status,phoneNumber,noOfSeats;
         Table tableData;
         Button checkOut;
 
@@ -116,6 +117,7 @@ class AlacarteTableAdapter extends RecyclerView.Adapter<AlacarteTableAdapter.Vie
             status = itemView.findViewById(R.id.txtTableStatus);
             checkOut = itemView.findViewById(R.id.btnCheckOut);
             phoneNumber = itemView.findViewById(R.id.txtDispPhoneNumber);
+            noOfSeats = itemView.findViewById(R.id.txtDispNoOfSeats);
         }
     }
 }

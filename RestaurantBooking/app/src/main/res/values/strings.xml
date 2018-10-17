@@ -31,4 +31,5 @@
     <string name="userrole_hint">UserRole (MANAGER/FRONTDESK)</string>
     <string name="title_value">AWESOME FOOD</string>
     <string name="user_activity_title">USER ACTITVITIES</string>
+    <string name="cust_feedback">Customer Feedback</string>
 </resources>

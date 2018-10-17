@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import project1.group1.restaurantbooking.data.CustomerResponse;
 import project1.group1.restaurantbooking.data.TableResponse;
+import project1.group1.restaurantbooking.data.UserFeedback;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -27,6 +28,7 @@ public class UserActivity extends AppCompatActivity {
     private final OkHttpClient client = new OkHttpClient();
     TableResponse tableResponse, inQueue;
     CustomerResponse customerResponse;
+    UserFeedback feedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,46 @@ public class UserActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent search = new Intent(UserActivity.this,AddCustomerActivity.class);
                 startActivity(search);
+            }
+        });
+
+        findViewById(R.id.btnFeedback).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fetchCustomerFeedback();
+            }
+        });
+    }
+
+    private void fetchCustomerFeedback() {
+        MediaType JSON = MediaType.parse("application/json;charset=utf-8");
+        Log.d("demo", "token value is : " + token);
+        final Request request = new Request.Builder().url(URLConstants.URL_CUSTOMER_FEEDBACK)
+                .header("Authorization","Bearer " +token)
+                .get()
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Log.d("demo", "failure reading customer feedback : " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                if(response.isSuccessful()){
+                    final String result = response.body().string();
+                    Gson gson = new Gson();
+                    feedback = gson.fromJson(result.toString(),UserFeedback.class);
+                    Log.d("demo", "User feedbacks coming out : " + feedback.toString());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent feedbackIntent = new Intent(UserActivity.this,FeedbackActivity.class);
+                            feedbackIntent.putExtra("feedbacks",feedback);
+                            startActivity(feedbackIntent);
+                        }
+                    });
+                }
             }
         });
     }

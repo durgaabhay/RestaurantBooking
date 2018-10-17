@@ -23,7 +23,8 @@
         <activity android:name=".ReservationActivity" />
         <activity android:name=".InqueueActivity" />
         <activity android:name=".ViewTablesActivity" />
-        <activity android:name=".AddCustomerActivity"></activity>
+        <activity android:name=".AddCustomerActivity" />
+        <activity android:name=".FeedbackActivity"></activity>
     </application>
 
 </manifest>

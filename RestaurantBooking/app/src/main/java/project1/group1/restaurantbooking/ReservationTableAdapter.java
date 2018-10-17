@@ -50,7 +50,7 @@ class ReservationTableAdapter extends RecyclerView.Adapter<ReservationTableAdapt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReservationTableAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull final ReservationTableAdapter.ViewHolder viewHolder, int position) {
         table = tableInfo.getResult().get(position);
         viewHolder.custName.setText(table.getUserName());
         viewHolder.tableNo.setText(table.getTableNumber());
@@ -61,13 +61,17 @@ class ReservationTableAdapter extends RecyclerView.Adapter<ReservationTableAdapt
         viewHolder.checkOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("demo", "checkout click: " + table.getTableNumber());
+                Log.d("demo", "checkout click: " + viewHolder.tableNo.getText().toString());
+                viewHolder.custName.setText("");
+                viewHolder.phoneNumber.setText("");
+                viewHolder.checkInTime.setText("");
+                viewHolder.status.setText("READY");
                 MediaType JSON = MediaType.parse("application/json;charset=utf-8");
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("tableNumber",table.getTableNumber());
-                jsonObject.addProperty("phoneNumber",table.getPhoneNumber());
+                jsonObject.addProperty("tableNumber",viewHolder.tableNo.getText().toString());
+                jsonObject.addProperty("phoneNumber",viewHolder.phoneNumber.getText().toString());
                 RequestBody formBody = RequestBody.create(JSON,jsonObject.toString());
-                final Request request = new Request.Builder().url("http://192.168.0.13:3000/customer/checkOut")
+                final Request request = new Request.Builder().url(URLConstants.URL_CHECKOUT_CUSTOMER)
                         .header("Authorization","Bearer " +authToken)
                         .addHeader("Content-Type","application/json")
                         .post(formBody)
@@ -97,7 +101,7 @@ class ReservationTableAdapter extends RecyclerView.Adapter<ReservationTableAdapt
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView custName,tableNo,checkInTime,status,phoneNumber;
+        TextView custName,tableNo,checkInTime,status,phoneNumber,noOfSeats;
         Table tableData;
         Button checkOut;
 

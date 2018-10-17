@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Table implements Serializable{
 
-    String tableNumber,status,tableType,userName,phoneNumber;
+    String tableNumber,status,tableType,userName,phoneNumber,noOfSeats;
     String bookingDate;
 
     public Table() {
@@ -20,7 +20,16 @@ public class Table implements Serializable{
                 ", userName='" + userName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", bookingDate=" + bookingDate +
+                ", noOfSeats=" + noOfSeats +
                 '}';
+    }
+
+    public String getNoOfSeats() {
+        return noOfSeats;
+    }
+
+    public void setNoOfSeats(String noOfSeats) {
+        this.noOfSeats = noOfSeats;
     }
 
     public String getTableNumber() {

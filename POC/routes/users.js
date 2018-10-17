@@ -8,7 +8,7 @@ const authToken = 'a5917e21f65e2698c8066dc4bdd259d5';
 const client = new twilio(accountSid, authToken);
 const Customer = require('../models/users');
 const Reservation = require('../models/reservation');
-
+const Feedback = require('../models/feedback');
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   Customer.find().exec().then(result => {
@@ -115,9 +115,21 @@ function reserveTable(req,res){
         })
 }
 
-router.post('/checkOut', (req,res,next) => {
+router.get('/feedback',checkAuth, (req,res,next) =>{
+    console.log('Inside user feedbacks');
+    Feedback.find().exec()
+        .then( result => {
+            console.log('User feedbacks are ' , result);
+            res.status(200).json({result});
+        }).catch( err => {
+             res.status(500).json({err});
+    });
+});
+
+router.post('/checkOut', checkAuth, (req,res,next) => {
    console.log('Inside checkout user' , req.body);
-   Reservation.updateOne({tableNumber:req.body.tableNumber} , {$set :{userName:'',phoneNumber: '', bookingDate: '',status:'READY'}})
+   Customer.updateOne({phoneNumber:req.body.phoneNumber},{$set: {tableStatus:'COMPLETE'}}).exec();
+   Reservation.updateOne({tableNumber:req.body.tableNumber} , {$set :{userName:'', phoneNumber: '', bookingDate: '',status:'READY'}})
        .exec().then( result => {
            console.log('user checkout complete')
            res.status(200).json({result});
